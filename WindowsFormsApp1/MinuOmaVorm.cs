@@ -16,10 +16,13 @@ namespace WindowsFormsApp1
         TreeView puu;
         Button nupp;
         Label silt;
+        CheckBox mruut1,mruut2;
+        RadioButton rnupp1, rnupp2, rnupp3, rnupp4;
+        PictureBox pilt;
         public MinuOmaVorm()
         {
-            Height = 600;
-            Width = 900;
+            Height = 700;
+            Width = 1400;
             Text = "Minu oma vorm koos elementidega";
             BackColor = Color.FloralWhite;
             puu = new TreeView();
@@ -29,6 +32,8 @@ namespace WindowsFormsApp1
             oksad.Nodes.Add(new TreeNode("Nupp"));
             oksad.Nodes.Add(new TreeNode("Silt"));
             oksad.Nodes.Add(new TreeNode("Dialog aken"));
+            oksad.Nodes.Add(new TreeNode("Märkeruut"));
+            oksad.Nodes.Add(new TreeNode("Radionupp"));
             puu.AfterSelect += Puu_AfterSelect;
             puu.Nodes.Add(oksad);
             this.Controls.Add(puu);
@@ -40,7 +45,31 @@ namespace WindowsFormsApp1
         Font fontTest = new Font("Arial", 30);
         private void Puu_AfterSelect(object sender, TreeViewEventArgs e)
         {
-            
+           
+            silt = new Label
+            {
+                Text = "Minu esimene vorm",
+                Size = new Size(300, 100),
+                Location = new Point(200, 10),
+                ForeColor = Color.Navy,
+                BorderStyle = BorderStyle.FixedSingle
+            };
+            mruut1 = new CheckBox
+            {
+                Checked = false,
+                Text = "Üks",
+                Location = new Point(silt.Left + silt.Width, 0),
+                Width = 60,
+                Height = 25
+            };
+            mruut2 = new CheckBox
+            {
+                Checked = false,
+                Text = "Kaks",
+                Location = new Point(silt.Left + silt.Width, mruut1.Height),
+                Width = 60,
+                Height = 25
+            };
             if (e.Node.Text == "Nupp")
             {
                 nupp = new Button();
@@ -53,12 +82,6 @@ namespace WindowsFormsApp1
             }
             else if (e.Node.Text == "Silt")
             {
-                silt = new Label{Text = "Minu esimene vorm",
-                    Size=new Size(300,100),
-                    Location = new Point(200, 10),
-                    ForeColor = Color.Navy,
-                    BorderStyle = BorderStyle.FixedSingle
-            };
                 silt.Font = LargeFont;
                 silt.MouseEnter += Silt_MouseEnter;
                 silt.MouseLeave += Silt_MouseLeave;
@@ -74,11 +97,115 @@ namespace WindowsFormsApp1
                 }
                 else if(vastus == DialogResult.No)
                 {
-                    MessageBox.Show("Oh, Big Smoke, my N-bro");
+                    MessageBox.Show("Yo, Big Smoke, my N-bro");
                     BackColor = Color.Black;
                 }
+
             }
-            
+            else if(e.Node.Text == "Märkeruut")
+            {
+                Label label = new Label
+                {
+                    Text = "Värvide segamine",
+                    Size = new Size(200, 30),
+                    Location = new Point(560, 0)
+                };
+                mruut1.CheckedChanged += new EventHandler(Mruut_CheckedChanged);
+                mruut2.CheckedChanged += new EventHandler(Mruut_CheckedChanged);
+                this.Controls.Add(mruut1);
+                this.Controls.Add(mruut2);
+                this.Controls.Add(label);
+            }
+            else if(e.Node.Text == "Radionupp")
+            {
+                rnupp1 = new RadioButton
+                {
+                    Text = "Vasakule",
+                    Width = 112,
+                    Location= new Point(mruut2.Left + mruut2.Width, mruut1.Height + mruut2.Height)
+                };
+                rnupp2 = new RadioButton
+                {
+                    Text = "Paremale",
+                    Location = new Point(mruut2.Left + mruut2.Width + rnupp1.Width, mruut1.Height + mruut2.Height)
+                };
+                rnupp3 = new RadioButton
+                {
+                    Text = "Ülesse",
+                    Location = new Point(mruut2.Left + mruut2.Width + rnupp1.Width + rnupp2.Width, mruut1.Height + mruut2.Height)
+                };
+                rnupp4 = new RadioButton
+                {
+                    Text = "Alla",
+                    Location = new Point(mruut2.Left + mruut2.Width + rnupp1.Width + rnupp2.Width + rnupp3.Width, mruut1.Height + mruut2.Height)
+                };
+                pilt = new PictureBox
+                {
+                    Image = new Bitmap("tthk.png"),
+                    Location = new Point(300,300),
+                    Size = new Size(100, 100),
+                    SizeMode = PictureBoxSizeMode.Zoom
+                };
+                rnupp1.CheckedChanged += new EventHandler(Rnupp_CheckedChanged);
+                rnupp2.CheckedChanged += new EventHandler(Rnupp_CheckedChanged);
+                rnupp3.CheckedChanged += new EventHandler(Rnupp_CheckedChanged);
+                rnupp4.CheckedChanged += new EventHandler(Rnupp_CheckedChanged);
+                this.Controls.Add(rnupp1);
+                this.Controls.Add(rnupp2);
+                this.Controls.Add(rnupp3);
+                this.Controls.Add(rnupp4);
+                this.Controls.Add(pilt);
+
+            }
+
+        }
+
+        private void Rnupp_CheckedChanged(object sender, EventArgs e)
+        {
+            if (rnupp1.Checked)
+            {
+                pilt.Location = new Point(pilt.Left +10, pilt.Top);
+                rnupp1.Checked = false;
+            }
+            if (rnupp2.Checked)
+            {
+                pilt.Location = new Point(pilt.Left - 10, pilt.Top);
+                rnupp2.Checked = false;
+            }
+            if (rnupp3.Checked)
+            {
+                pilt.Location = new Point(pilt.Left, pilt.Top - 10);
+                rnupp3.Checked = false;
+            }
+            if (rnupp4.Checked)
+            {
+                pilt.Location = new Point(pilt.Left, pilt.Top + 10);
+                rnupp4.Checked = false;
+            }
+        }
+
+        private void Mruut_CheckedChanged(object sender, EventArgs e)
+        {
+            if (mruut1.Checked == true && mruut2.Checked == false)
+            {
+                ForeColor = Color.FromArgb(255, 0, 0);
+                MessageBox.Show("Punane");
+            }
+            else if (mruut2.Checked == true && mruut1.Checked == false) 
+            {
+                ForeColor = Color.FromArgb(255, 255, 0);
+                MessageBox.Show("Kollane");
+            }
+            else if (mruut2.Checked == true && mruut1.Checked == true)
+            {
+                ForeColor = Color.FromArgb(255, 255, 255);
+                MessageBox.Show("Valge");
+            }
+            else if (mruut2.Checked == false && mruut1.Checked == false)
+            {
+                ForeColor = Color.FromArgb(0, 0, 255);
+                MessageBox.Show("Sinine");
+            }
         }
 
         private void Silt_MouseLeave(object sender, EventArgs e)
