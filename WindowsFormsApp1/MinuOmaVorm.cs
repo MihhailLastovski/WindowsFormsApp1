@@ -14,8 +14,8 @@ namespace WindowsFormsApp1
     public partial class MinuOmaVorm : Form
     {
         TreeView puu;
-        Button nupp;
-        Label silt;
+        Button nupp, nupp1, nupp2;
+        Label silt, label2;
         CheckBox mruut1,mruut2;
         RadioButton rnupp1, rnupp2, rnupp3, rnupp4;
         PictureBox pilt;
@@ -45,10 +45,12 @@ namespace WindowsFormsApp1
 
         Random rnd = new Random();
         Font LargeFont = new Font("Arial", 20);
+        Font MediumFont = new Font("Arial", 11);
         Font fontTest = new Font("Arial", 30);
         private void Puu_AfterSelect(object sender, TreeViewEventArgs e)
         {
-           
+
+
             silt = new Label
             {
                 Text = "Minu esimene vorm",
@@ -166,21 +168,97 @@ namespace WindowsFormsApp1
                 {
                     Width = 400,
                     Height = 30,
-                    Location = new Point(350, 500),
+                    Location = new Point(550, 600),
                     Value = 0,
                     Minimum = 0,
                     Maximum = 100,
                     Step = 1,
-                    //Dock = DockStyle.Bottom,
+                    
+                };
+                nupp1 = new Button {
+                    Text = "Да",
+                    Height = 30,
+                    Width = 50,
+                    Location = new Point(550, 550),
+                };
+                nupp2 = new Button
+                {
+                    Text = "Нет",
+                    Height = 30,
+                    Width = 50,
+                    Location = new Point(700, 550),
+                };
+
+                label2 = new Label
+                {
+                    Text = "1. Можно ли выбрать больше одной радиокнопки?",
+                    Size = new Size(800, 30),
+                    Location = new Point(550, 500),
+                    Font = MediumFont
                 };
                 aeg = new Timer();
                 aeg.Enabled = true;
-                aeg.Tick += Aeg_Tick;
+                nupp1.Click += new EventHandler(Nupp1_Click);
+                nupp2.Click += new EventHandler(Nupp2_Click);
+                this.Controls.Add(label2);
                 this.Controls.Add(riba);
+                this.Controls.Add(nupp1);
+                this.Controls.Add(nupp2);
             }
 
         }
 
+        private async void Nupp1_Click(object sender, EventArgs e)
+        {
+            if(nupp1.Enabled == true && label2.Text == "1. Можно ли выбрать больше одной радиокнопки?")
+            {
+                label2.Text = "Неверно";
+                riba.Value = 0;
+                await Task.Delay(1000);
+                label2.Text = "1. Можно ли выбрать больше одной радиокнопки?";
+            }
+            else if (nupp1.Enabled == true && label2.Text == "2. Верно ли это написание Label label = new Label{Text = \"Text\",Size = new Size(200, 30),Location = new Point(0, 0)};?")
+            {
+                label2.Text = "Верно";
+                riba.Value = 66;
+                await Task.Delay(1000);
+                label2.Text = "3. Понравился ли, Вам, тест?";
+            }
+            else if(nupp1.Enabled == true && label2.Text == "3. Понравился ли, Вам, тест?") 
+            {
+                label2.Text = "Верно";
+                riba.Value = 100;
+                await Task.Delay(1000);
+                label2.Text = "Поздравляю! Вы прошли тест!";
+                this.Controls.Remove(nupp1);
+                this.Controls.Remove(nupp2);
+            }
+            
+        }
+        private async void Nupp2_Click(object sender, EventArgs e)
+        {
+            if (nupp2.Enabled == true && label2.Text == "1. Можно ли выбрать больше одной радиокнопки?")
+            {
+                label2.Text = "Верно";
+                riba.Value = 33;
+                await Task.Delay(1000);
+                label2.Text = "2. Верно ли это написание Label label = new Label{Text = \"Text\",Size = new Size(200, 30),Location = new Point(0, 0)};?";
+            }
+            else if (nupp2.Enabled == true && label2.Text == "2. Верно ли это написание Label label = new Label{Text = \"Text\",Size = new Size(200, 30),Location = new Point(0, 0)};?")
+            {
+                label2.Text = "Неверно";
+                riba.Value = 0;
+                await Task.Delay(1000);
+                label2.Text = "1. Можно ли выбрать больше одной радиокнопки?";
+            }
+            else if (nupp2.Enabled == true && label2.Text == "3. Понравился ли, Вам, тест?") 
+            {
+                label2.Text = "Неверно";
+                riba.Value = 0;
+                await Task.Delay(1000);
+                label2.Text = "1. Можно ли выбрать больше одной радиокнопки?";
+            }
+        }
         private void Aeg_Tick(object sender, EventArgs e)
         {
             riba.PerformStep();
