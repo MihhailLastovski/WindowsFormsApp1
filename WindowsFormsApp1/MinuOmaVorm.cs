@@ -19,6 +19,8 @@ namespace WindowsFormsApp1
         CheckBox mruut1,mruut2;
         RadioButton rnupp1, rnupp2, rnupp3, rnupp4;
         PictureBox pilt;
+        ProgressBar riba;
+        Timer aeg;
         public MinuOmaVorm()
         {
             Height = 700;
@@ -34,6 +36,7 @@ namespace WindowsFormsApp1
             oksad.Nodes.Add(new TreeNode("Dialog aken"));
             oksad.Nodes.Add(new TreeNode("Märkeruut"));
             oksad.Nodes.Add(new TreeNode("Radionupp"));
+            oksad.Nodes.Add(new TreeNode("Edenemisriba-ProgressBar"));
             puu.AfterSelect += Puu_AfterSelect;
             puu.Nodes.Add(oksad);
             this.Controls.Add(puu);
@@ -87,22 +90,22 @@ namespace WindowsFormsApp1
                 silt.MouseLeave += Silt_MouseLeave;
                 this.Controls.Add(silt);
             }
-            else if(e.Node.Text == "Dialog aken")
+            else if (e.Node.Text == "Dialog aken")
             {
                 MessageBox.Show("Siia kirjuta lause", "Kõike lihtne aken");
-                var vastus = MessageBox.Show("Kas paneme aken kinni?", "Valik",MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                var vastus = MessageBox.Show("Kas paneme aken kinni?", "Valik", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
                 if (vastus == DialogResult.Yes)
                 {
                     this.Close();
                 }
-                else if(vastus == DialogResult.No)
+                else if (vastus == DialogResult.No)
                 {
                     MessageBox.Show("Yo, Big Smoke, my N-bro");
                     BackColor = Color.Black;
                 }
 
             }
-            else if(e.Node.Text == "Märkeruut")
+            else if (e.Node.Text == "Märkeruut")
             {
                 Label label = new Label
                 {
@@ -116,13 +119,13 @@ namespace WindowsFormsApp1
                 this.Controls.Add(mruut2);
                 this.Controls.Add(label);
             }
-            else if(e.Node.Text == "Radionupp")
+            else if (e.Node.Text == "Radionupp")
             {
                 rnupp1 = new RadioButton
                 {
                     Text = "Vasakule",
                     Width = 112,
-                    Location= new Point(mruut2.Left + mruut2.Width, mruut1.Height + mruut2.Height)
+                    Location = new Point(mruut2.Left + mruut2.Width, mruut1.Height + mruut2.Height)
                 };
                 rnupp2 = new RadioButton
                 {
@@ -142,7 +145,7 @@ namespace WindowsFormsApp1
                 pilt = new PictureBox
                 {
                     Image = new Bitmap("tthk.png"),
-                    Location = new Point(300,300),
+                    Location = new Point(300, 300),
                     Size = new Size(100, 100),
                     SizeMode = PictureBoxSizeMode.Zoom
                 };
@@ -157,19 +160,42 @@ namespace WindowsFormsApp1
                 this.Controls.Add(pilt);
 
             }
+            else if (e.Node.Text == "Edenemisriba-ProgressBar") 
+            {
+                riba = new ProgressBar
+                {
+                    Width = 400,
+                    Height = 30,
+                    Location = new Point(350, 500),
+                    Value = 0,
+                    Minimum = 0,
+                    Maximum = 100,
+                    Step = 1,
+                    //Dock = DockStyle.Bottom,
+                };
+                aeg = new Timer();
+                aeg.Enabled = true;
+                aeg.Tick += Aeg_Tick;
+                this.Controls.Add(riba);
+            }
 
+        }
+
+        private void Aeg_Tick(object sender, EventArgs e)
+        {
+            riba.PerformStep();
         }
 
         private void Rnupp_CheckedChanged(object sender, EventArgs e)
         {
             if (rnupp1.Checked)
             {
-                pilt.Location = new Point(pilt.Left +10, pilt.Top);
+                pilt.Location = new Point(pilt.Left - 10, pilt.Top);
                 rnupp1.Checked = false;
             }
             if (rnupp2.Checked)
             {
-                pilt.Location = new Point(pilt.Left - 10, pilt.Top);
+                pilt.Location = new Point(pilt.Left + 10, pilt.Top);
                 rnupp2.Checked = false;
             }
             if (rnupp3.Checked)
