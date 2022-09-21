@@ -21,6 +21,8 @@ namespace WindowsFormsApp1
         PictureBox pilt;
         ProgressBar riba;
         Timer aeg;
+        TextBox tekst;
+        
         public MinuOmaVorm()
         {
             Height = 700;
@@ -37,6 +39,8 @@ namespace WindowsFormsApp1
             oksad.Nodes.Add(new TreeNode("Märkeruut"));
             oksad.Nodes.Add(new TreeNode("Radionupp"));
             oksad.Nodes.Add(new TreeNode("Edenemisriba-ProgressBar"));
+            oksad.Nodes.Add(new TreeNode("Tekstkast-TextBox"));
+            oksad.Nodes.Add(new TreeNode("MinuVorm-MyForm"));
             puu.AfterSelect += Puu_AfterSelect;
             puu.Nodes.Add(oksad);
             this.Controls.Add(puu);
@@ -146,7 +150,7 @@ namespace WindowsFormsApp1
                 };
                 pilt = new PictureBox
                 {
-                    Image = new Bitmap("tthk.png"),
+                    Image = new Bitmap("../../tthk.png"),
                     Location = new Point(300, 300),
                     Size = new Size(100, 100),
                     SizeMode = PictureBoxSizeMode.Zoom
@@ -162,7 +166,7 @@ namespace WindowsFormsApp1
                 this.Controls.Add(pilt);
 
             }
-            else if (e.Node.Text == "Edenemisriba-ProgressBar") 
+            else if (e.Node.Text == "Edenemisriba-ProgressBar")
             {
                 riba = new ProgressBar
                 {
@@ -173,9 +177,10 @@ namespace WindowsFormsApp1
                     Minimum = 0,
                     Maximum = 100,
                     Step = 1,
-                    
+
                 };
-                nupp1 = new Button {
+                nupp1 = new Button
+                {
                     Text = "Да",
                     Height = 30,
                     Width = 50,
@@ -205,8 +210,31 @@ namespace WindowsFormsApp1
                 this.Controls.Add(nupp1);
                 this.Controls.Add(nupp2);
             }
+            else if (e.Node.Text == "Tekstkast-TextBox")
+            {
+                tekst = new TextBox
+                {
+                    Font = new Font("Arial", 34, FontStyle.Italic),
+                    Location = new Point(800, 530),
+                    Enabled = false
+                };
+                puu.MouseDoubleClick += Tekst_MouseDoubleClick;
+                this.Controls.Add(tekst);
+            }
+            else if (e.Node.Text == "MinuVorm-MyForm")
+            {
+                MinuVorm minu = new MinuVorm("Kuulane muusikat", "Vajuta siia", "Faili nimi");
+                minu.ShowDialog();
+            }
 
         }
+
+        private void Tekst_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            if (tekst.Enabled == false) { tekst.Enabled = true; }
+            else { tekst.Enabled = false; }
+        }
+
 
         private async void Nupp1_Click(object sender, EventArgs e)
         {
@@ -259,11 +287,6 @@ namespace WindowsFormsApp1
                 label2.Text = "1. Можно ли выбрать больше одной радиокнопки?";
             }
         }
-        private void Aeg_Tick(object sender, EventArgs e)
-        {
-            riba.PerformStep();
-        }
-
         private void Rnupp_CheckedChanged(object sender, EventArgs e)
         {
             if (rnupp1.Checked)
