@@ -223,7 +223,7 @@ namespace WindowsFormsApp1
             }
             else if (e.Node.Text == "MinuVorm-MyForm")
             {
-                MinuVorm minu = new MinuVorm("Kuulane muusikat", "Vajuta siia", "Faili nimi");
+                MinuVorm minu = new MinuVorm("Kuulane muusikat");
                 minu.ShowDialog();
             }
 
